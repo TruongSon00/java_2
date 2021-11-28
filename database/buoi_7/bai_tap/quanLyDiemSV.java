@@ -270,7 +270,7 @@ public class quanLyDiemSV {
                     try {
                         ket_qua.insertTXT(root);
                     } catch (SQLException e) {
-                        // TODO Auto-generated catch block
+
                         e.printStackTrace();
                     }
                     break;

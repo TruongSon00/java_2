@@ -13,7 +13,7 @@ public class myThread extends Thread {
         // try {
         // oThread.join();
         // } catch (InterruptedException e) {
-        // // TODO Auto-generated catch block
+
         // e.printStackTrace();
         // }
         System.out.println("Begin thread 1");
@@ -22,7 +22,7 @@ public class myThread extends Thread {
             try {
                 Thread.sleep(5);
             } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
+
                 e.printStackTrace();
             }
         }

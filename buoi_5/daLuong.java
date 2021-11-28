@@ -13,7 +13,7 @@ public class daLuong {
         // try {
         // t1.join();
         // } catch (InterruptedException e) {
-        // // TODO Auto-generated catch block
+
         // e.printStackTrace();
         // }
 
@@ -24,7 +24,7 @@ public class daLuong {
         // try {
         // t0.join();
         // } catch (InterruptedException e) {
-        // // TODO Auto-generated catch block
+
         // e.printStackTrace();
         // }
 

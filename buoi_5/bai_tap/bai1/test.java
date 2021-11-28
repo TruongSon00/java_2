@@ -42,7 +42,7 @@ public class test {
             System.out.println(new File(root, "test_3.bin").createNewFile());
             System.out.println(new File(root, "test_4.bin").createNewFile());
         } catch (IOException e) {
-            // TODO Auto-generated catch block
+
             e.printStackTrace();
         }
 

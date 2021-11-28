@@ -11,7 +11,7 @@ public class test {
             if (fileTest.createNewFile())
                 System.out.println("File tao thanh cong: " + fileTest.getName());
         } catch (IOException e) {
-            // TODO Auto-generated catch block
+
             e.printStackTrace();
         }
 

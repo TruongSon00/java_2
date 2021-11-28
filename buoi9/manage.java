@@ -12,5 +12,6 @@ public class manage {
         System.out.println(instance1);
         System.out.println(instance2);
         System.out.println(connect);
+        System.out.println("test");
     }
 }
