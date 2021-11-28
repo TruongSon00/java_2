@@ -9,7 +9,7 @@ import buoi9.designbattan.db_connection;
 import buoi9.utils.respon;
 
 public class customerDaoIlement implements IcustomerDao {
-    Connection connect = db_connection.getConnection();
+    Connection connect = db_connection.getInstance().getConnection();
 
     @Override
     public respon insert(customer customer) {

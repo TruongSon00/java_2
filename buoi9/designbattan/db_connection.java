@@ -15,7 +15,7 @@ public class db_connection {
         return instance;
     }
 
-    public static Connection getConnection() {
+    public synchronized Connection getConnection() {
         Connection connect = null;
         try {
             connect = DriverManager.getConnection(contant.url, contant.name, contant.password);
