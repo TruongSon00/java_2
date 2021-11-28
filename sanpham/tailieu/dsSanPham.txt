@@ -1,0 +1,5 @@
+kieu: loai, ten, gia
+
+dt, iphone, 13tr
+dt, samsung, 25tr
+dt, asus, 5tr

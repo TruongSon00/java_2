@@ -1,0 +1,4 @@
+'AV', N'Anh Văn'
+'TH', N'Tin Học'
+'TR', N'Triết'
+'VL', N'Vật Lý'

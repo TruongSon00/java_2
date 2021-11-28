@@ -1,0 +1,6 @@
+'A01', N'Nguyễn Thị', N'Hải', N'Nữ', '23/02/1990', N'Hà Nội', 'TH', 130000
+'A02', N'Trần Văn', N'Chính', N'Nam', '24/12/1992', N'Bình Định', 'VL', 150000
+'A03', N'Lê Thu Bạch', N'Yến', N'Nữ', '21/02/1990', N'TP Hồ Chí Minh', 'TH', 170000
+'A04', N'Trần Anh', N'Tuấn', N'Nam', '20/12/1990', N'Hà Nội', 'AV', 80000
+'B01', N'Trần Thanh', N'Mai', N'Nữ', '12/08/1991', N'Hải Phòng', 'TR', 0
+'B02', N'Trần Thị Thu', N'Thủy', N'Nữ', '02/01/1991', N'TP Hồ Chí Minh', 'AV', 0
