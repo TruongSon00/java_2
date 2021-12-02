@@ -1,6 +1,7 @@
 package assignment_adf2.object;
 
 public class account {
+    private int id;
     private int khID;
     private String soTK;
     private int loaitk;
@@ -22,6 +23,14 @@ public class account {
         this.hanMuc = hanMuc;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public int getKhID() {
         return khID;
     }
@@ -38,6 +47,10 @@ public class account {
         this.soTK = soTK;
     }
 
+    public String getLoaitkIn() {
+        return loaitk == 0 ? "Tra truoc" : "Tra sau";
+    }
+
     public int getLoaitk() {
         return loaitk;
     }
@@ -48,6 +61,10 @@ public class account {
 
     public int getTrangThai() {
         return trangThai;
+    }
+
+    public String getTrangThaiIn() {
+        return trangThai == 0 ? "disable" : "active";
     }
 
     public void setTrangThai(int trangThai) {
@@ -80,18 +97,20 @@ public class account {
 
     @Override
     public String toString() {
-        return " \n Account  -->  soTK = " + soTK
+        return " \n Account  --> |  id = " + id
+
+                + "  |  sotk = " + soTK
 
                 + "  |  khID = " + khID
 
                 + "  |  soTien = " + soTien
-                + "  |  loaitk=" + loaitk
+                + "  |  loaitk=" + getLoaitkIn()
 
                 + "  |  ngayTao = " + ngayTao
 
                 + "  |  hanmuc = " + hanMuc
 
-                + "  |  trangThai = " + trangThai + "]";
+                + "  |  trangThai = " + getTrangThaiIn();
     }
 
 }

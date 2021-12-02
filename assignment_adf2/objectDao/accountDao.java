@@ -1,13 +1,17 @@
 package assignment_adf2.objectDao;
 
+import java.util.List;
+
 import assignment_adf2.object.account;
 
 public interface accountDao {
-    public boolean insert(account customer);
+    public void insert(account customer);
 
-    public boolean update(account customer);
+    public void napTien(account customer);
 
-    public boolean delete(String maKH);
+    public void rutTien(String maKH);
 
-    public boolean show();
+    public account tkTheoSoTK(String soTK);
+
+    public List<account> tkTheoMaKH(String maKH);
 }

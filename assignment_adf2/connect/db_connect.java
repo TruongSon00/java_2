@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import assignment_adf2.util.const_util;
 
 public class db_connect {
-    public Connection getConnect() {
+    public static Connection getConnect() {
         Connection connect = null;
         try {
             connect = DriverManager.getConnection(const_util.url, const_util.user, const_util.password);

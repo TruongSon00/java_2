@@ -7,6 +7,9 @@ public class giaoDich {
     private String ngayTao;
     private String noiThucHien;
 
+    public giaoDich() {
+    }
+
     public giaoDich(String soTK, int loaiTT, int soTien, String ngayTao, String noiThucHien) {
         this.soTK = soTK;
         this.loaiTT = loaiTT;
@@ -23,12 +26,16 @@ public class giaoDich {
         this.soTK = soTK;
     }
 
-    public int getLoaiTT() {
-        return loaiTT;
+    public String getLoaiTTIn() {
+        return loaiTT == 0 ? "nap" : "rut";
     }
 
     public void setLoaiTT(int loaiTT) {
         this.loaiTT = loaiTT;
+    }
+
+    public int getLoaiTT() {
+        return loaiTT;
     }
 
     public int getSoTien() {
@@ -63,7 +70,7 @@ public class giaoDich {
 
                 + "  |  soTien = " + soTien
 
-                + "  |  loaiTT = " + loaiTT
+                + "  |  loaiTT = " + getLoaiTTIn()
 
                 + "  |  noiThucHien = " + noiThucHien;
 

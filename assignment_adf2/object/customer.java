@@ -1,20 +1,21 @@
 package assignment_adf2.object;
 
 public class customer {
+    private int id;
     private String maKH;
     private String tenKH;
     private String cmt;
     private String soDT;
     private String email;
     private String ngaySinh;
-    private String gioiTinh;
+    private int gioiTinh;
     private String address;
     private int loaiKH;
 
     public customer() {
     }
 
-    public customer(String maKH, String tenKH, String cmt, String soDT, String email, String ngaySinh, String gioiTinh,
+    public customer(String maKH, String tenKH, String cmt, String soDT, String email, String ngaySinh, int gioiTinh,
             String address, int loaiKH) {
         this.maKH = maKH;
         this.tenKH = tenKH;
@@ -25,6 +26,14 @@ public class customer {
         this.gioiTinh = gioiTinh;
         this.address = address;
         this.loaiKH = loaiKH;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getMaKH() {
@@ -75,12 +84,17 @@ public class customer {
         this.ngaySinh = ngaySinh;
     }
 
-    public String getGioiTinh() {
-        return gioiTinh;
+    public String getGioiTinhIn() {
+
+        return (gioiTinh == 1 ? "Nam" : (gioiTinh == 0) ? "Nu" : "Khac");
     }
 
-    public void setGioiTinh(String gioiTinh) {
+    public void setGioiTinh(int gioiTinh) {
         this.gioiTinh = gioiTinh;
+    }
+
+    public int getGioiTinh() {
+        return gioiTinh;
     }
 
     public String getAddress() {
@@ -89,6 +103,10 @@ public class customer {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getLoaiKHIn() {
+        return loaiKH == 1 ? "KH Vip" : "KH thuong";
     }
 
     public int getLoaiKH() {
@@ -101,23 +119,16 @@ public class customer {
 
     @Override
     public String toString() {
-        return "\nCustomer -->  maKH = " + maKH
-
+        return "\nCustomer -->  id = " + id
+                + "  |  maKH = " + maKH
                 + "  |  tenKH = " + tenKH
-
                 + "  |  cmt = " + cmt
-
                 + "  |  soDT = " + soDT
-
                 + "  |  ngaySinh = " + ngaySinh
-
                 + "  |  address = " + address
-
                 + "  |  email = " + email
-
-                + "  |  gioiTinh = " + gioiTinh
-
-                + "  |  loaiKH = " + loaiKH;
+                + "  |  gioiTinh = " + getGioiTinhIn()
+                + "  |  loaiKH = " + getLoaiKHIn();
 
     }
 

@@ -1,5 +1,6 @@
 use TestDB
 
+go
 if EXISTS (select name
 from sys.databases
 WHERE name = 'adf2')
@@ -10,6 +11,8 @@ use adf2
 -- ---------- create table ------------
 
 -- ----------- table customer --------
+
+go
 
 create table customer
 (
@@ -64,3 +67,7 @@ ALTER TABLE account
 ADD FOREIGN KEY (kh_id) REFERENCES customer(id);
 ALTER TABLE giaoDich
 ADD FOREIGN KEY (sotk) REFERENCES account(sotk);
+
+
+
+

@@ -30,6 +30,43 @@ public class quanLy {
         }
     }
 
+    // ----------- 1. customer -----------
+    public void customer(Scanner sc) {
+        int choose;
+        while (true) {
+            System.out.println("========= MAIN ========");
+            System.out.print("1. Customer");
+            System.out.println("\t\t2. Account");
+            System.out.print("3. Giao dich");
+            System.out.println("\t\t4. Thoat");
+            System.out.print("\nNhap lua chon: ");
+            choose = checkInt(sc);
+
+            switch (choose) {
+                case 1:
+
+                    break;
+                case 2:
+
+                    break;
+                case 3:
+
+                    break;
+                case 4:
+
+                    break;
+
+                default:
+                    break;
+
+            }
+            if (choose == 4)
+                break;
+        }
+    }
+    // ----------- 2. account -----------
+    // ----------- 3. giao dich -----------
+
     public static void main(String[] args) {
         quanLy manage = new quanLy();
         int choose;
@@ -40,7 +77,7 @@ public class quanLy {
             System.out.println("\t\t2. Account");
             System.out.print("3. Giao dich");
             System.out.println("\t\t4. Thoat");
-            System.out.print("\n4. Nhap lua chon: ");
+            System.out.print("\nNhap lua chon: ");
             choose = manage.checkInt(sc);
 
             switch (choose) {
@@ -59,8 +96,12 @@ public class quanLy {
 
                 default:
                     break;
+
             }
+            if (choose == 4)
+                break;
         }
+        sc.close();
 
     }
 }
