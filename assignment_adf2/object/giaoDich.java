@@ -1,6 +1,7 @@
 package assignment_adf2.object;
 
 public class giaoDich {
+    private int id;
     private String soTK;
     private int loaiTT;
     private int soTien;
@@ -62,9 +63,18 @@ public class giaoDich {
         this.noiThucHien = noiThucHien;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     @Override
     public String toString() {
-        return "\nGiaoDich  -->  soTK = " + soTK
+        return "\nGiaoDich  -->  id = " + getId()
+                + "  |  soTK = " + soTK
 
                 + "  |  ngayTao = " + ngayTao
 

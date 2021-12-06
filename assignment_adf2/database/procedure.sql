@@ -1,9 +1,10 @@
 
+use TestDB
 use adf2
 
 
 -- -------- procedure update customer ---------
-drop proc dbo.pr_update_customer
+
 go
 create procedure pr_update_customer
     @id int,
@@ -34,8 +35,7 @@ else
 end
 
 -- -------- procedure delete customer ---------
-go
-drop proc dbo.pr_delete_customer
+
 go
 create proc pr_delete_customer
     @maKH VARCHAR(20),
@@ -81,11 +81,9 @@ else
 set @status = 1
 -- -------- insert ------------
 
--- drop proc  dbo.pr_insert_account
 go
 create proc pr_insert_account
     @maKH varchar(20),
-    @soTk char(6),
     @loaitk int
 as
 declare @kh_id  int, @loaiKH int
@@ -98,23 +96,23 @@ where maKH = @maKH
 if (@loaitk = 0)
 begin
     insert into account
-        (kh_id, sotk , loaitk , trangThai, ngayTao, soTien, hanMuc)
+        (kh_id , loaitk , trangThai, ngayTao, soTien, hanMuc)
     values
-        ( @kh_id, @soTk, @loaitk, 1, getdate(), 0, 1000000)
+        ( @kh_id, @loaitk, 1, getdate(), 0, 1000000)
 end 
 
 else 
 begin
     declare @hanMuc int
-    set @hanMuc =  case 
+    set @hanMuc =  (case 
         when @loaiKH = 0 then 1000000
         when @loaiKH = 1 then 30000000
         else 0
-    end
+    end)
     insert into account
-        (kh_id, sotk , loaitk , trangThai, ngayTao, soTien, hanMuc)
+        (kh_id , loaitk , trangThai, ngayTao, soTien, hanMuc)
     values
-        ( @kh_id, @soTk, @loaitk, 1, getdate(), 0, @hanMuc)
+        ( @kh_id, @loaitk, 1, getdate(), 0, @hanMuc)
 end 
 
 
@@ -124,8 +122,7 @@ end
 
 -- ------- proceduce nap tien ----------
 
-go
-drop proc dbo.pr_NapTien_account
+
 go
 create proc pr_NapTien_account
     @soTk char(6),
@@ -164,8 +161,7 @@ else
 
 
 -- --------- procedure rut tien ------------
-go
-drop PROC dbo.pr_RutTien_account
+
 go
 create proc pr_RutTien_account
     @soTk char(6),
@@ -236,10 +232,44 @@ begin
     set @status = 'so tai khoan khong ton tai'
 end
 
-go 
+go
 
+-- ---------- procedure transactionTheoCus -----------
 
+create PROC pr_select_transaction_cus
 
+    @maKH varchar(20),
+    @beginTime date,
+    @endTime date
+
+as
+begin
+    select giaoDich.*
+    from giaoDich inner join account on account.sotk = giaoDich.sotk
+        inner join customer on customer.id = account.kh_id
+    where customer.maKH = @maKH and giaoDich.ngayTao >= @beginTime and giaoDich.ngayTao <= @endTime
+    order by account.loaitk,giaoDich.ngayTao
+
+end
+
+-- ---------- procedure transaction xuatFile -----------
+
+go
+create proc pr_transaction_theoMonth
+    @month int,
+    @year int
+as
+
+begin
+    select giaoDich.*, customer.maKH
+    from giaoDich inner join account on account.sotk = giaoDich.sotk
+        inner join customer on customer.id = account.kh_id
+    where  month(giaoDich.ngayTao) = @month and year(giaoDich.ngayTao) = @year
+
+    order by customer.maKH, giaoDich.sotk
+end
+
+exec dbo.pr_transaction_theoMonth 8, 2021
 
 
 

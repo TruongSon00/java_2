@@ -5,11 +5,11 @@ import java.util.List;
 import assignment_adf2.object.account;
 
 public interface accountDao {
-    public void insert(account customer);
+    public void insert(String maKH, String soTK);
 
-    public void napTien(account customer);
+    public void napTien(String soTK, int soTienNap);
 
-    public void rutTien(String maKH);
+    public void rutTien(String soTK, int soTienRut);
 
     public account tkTheoSoTK(String soTK);
 

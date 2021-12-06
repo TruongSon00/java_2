@@ -7,17 +7,55 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 import assignment_adf2.object.customer;
 import assignment_adf2.objectDao.customerDao;
 
 public class customerImlement extends customer implements customerDao {
     private Connection connect;
+    private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
     public customerImlement(Connection connect) {
         this.connect = connect;
+    }
+
+    // ------------ nhap tt ---------
+    @Override
+    public customer nhapTT(Scanner sc) {
+        customer khack = new customer();
+        System.out.println("Nhap thong tin khach hang");
+        System.out.print("Nhap ma khach hang: ");
+        khack.setMaKH(sc.nextLine());
+
+        System.out.print("Nhap Ten khach hang: ");
+        khack.setTenKH(sc.nextLine());
+
+        System.out.print("Nhap CMT (gom 10 so): ");
+        khack.setCmt(sc.nextLine());
+
+        System.out.print("Nhap SDT (gom 10 so): ");
+        khack.setSoDT(sc.nextLine());
+
+        System.out.print("Nhap Email: ");
+        khack.setEmail(sc.nextLine());
+
+        System.out.print("Nhap ngay sinh (dd/MM/yyyy): ");
+        khack.setNgaySinh(sc.nextLine());
+
+        System.out.print("Nhap gioi tinh (1: name, 0: nu or 2: khac): ");
+        khack.setGioiTinh(sc.nextInt());
+        sc.nextLine();
+        System.out.print("Nhap Address: ");
+        khack.setAddress(sc.nextLine());
+
+        System.out.print("Nhap loai khach hang: ");
+        khack.setLoaiKH(sc.nextInt());
+        sc.nextLine();
+        return null;
     }
 
     // ------------- delete -------------
@@ -89,7 +127,7 @@ public class customerImlement extends customer implements customerDao {
                 cus.setCmt(listSet.getString(4));
                 cus.setSoDT(listSet.getString(5));
                 cus.setEmail(listSet.getString(6));
-                cus.setNgaySinh(listSet.getString(7));
+                cus.setNgaySinh(sdf.format(listSet.getDate(7)));
                 cus.setGioiTinh(listSet.getInt(8));
                 cus.setAddress(listSet.getString(9));
                 cus.setLoaiKH(listSet.getInt(10));

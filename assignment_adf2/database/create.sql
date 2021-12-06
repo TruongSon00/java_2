@@ -19,8 +19,8 @@ create table customer
     id int IDENTITY(1,1),
     maKH varchar(20) unique,
     tenKH nvarchar(100),
-    cmt VARCHAR(10) UNIQUE check(ISNUMERIC(cmt) = 1),
-    soDT VARCHAR(10) UNIQUE check(ISNUMERIC(soDT) = 1),
+    cmt char(10) UNIQUE check(ISNUMERIC(cmt) = 1 and len(cmt) = 10),
+    soDT char(10) UNIQUE check(ISNUMERIC(soDT) = 1 and len(soDT) = 10),
     email VARCHAR(50) UNIQUE,
     ngaySinh DATE,
     gioiTinh int CHECK (gioiTinh >= 0 and gioiTinh <= 2) ,
@@ -29,19 +29,13 @@ create table customer
     CONSTRAINT PK_Customer PRIMARY KEY (ID),
 )
 
--- SELECT *, case 
---          when gioiTinh = 1 then 'Basketball' 
---          when gioiTinh = 2 then 'Football' 
---          when gioiTinh = 3 then 'Soccer' 
---          else 'Kickball' 
---        end as "gioiTinhSTR"
--- from customer
+
 
 create table account
 (
     id int IDENTITY(1,1),
     kh_id int,
-    sotk char(6) UNIQUE check(ISNUMERIC(kh_id) = 1),
+    sotk char(6) unique ,
     loaitk int check(loaitk = 0 or loaitk =1),
     trangThai int CHECK (trangThai=0 or trangThai = 1),
     ngayTao date check (ngayTao <= getdate()),
@@ -50,6 +44,17 @@ create table account
     CONSTRAINT PK_Account PRIMARY KEY (ID),
 )
 
+go
+create trigger trig_sotk on account after insert 
+as 
+begin
+    update account set sotk = right('000000' + cast (id as varchar(6)), 6)
+where id in(select id
+    from inserted)
+
+end 
+
+go
 create TABLE giaoDich
 (
     id int IDENTITY(1,1),
@@ -59,8 +64,6 @@ create TABLE giaoDich
     ngayTao date check(ngayTao <= getdate()),
     noiThucHien NVARCHAR(100),
     CONSTRAINT PK_Giaodich PRIMARY KEY (ID),
-
-
 )
 -- --------- create foreign key ----------
 ALTER TABLE account

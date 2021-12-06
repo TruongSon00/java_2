@@ -49,7 +49,7 @@ public class accountImliment extends account implements accountDao {
 
     // ----------- insert ---------------
     @Override
-    public void insert(String maKH, String soTK) {
+    public void insert(String maKH) {
         int loaitk = 0;
 
         int check = checkAcc(maKH);
@@ -59,14 +59,13 @@ public class accountImliment extends account implements accountDao {
             loaitk = 1;
         else if (check == -1)
             System.out.println("Ban chi duoc tao toi da 2 tai khoan");
-        if (check == 1 || check == 0) {
-            String sql = "exec dbo.pr_insert_account ?,?,?";
+        if (check != -1) {
+            String sql = "exec dbo.pr_insert_account ?,?";
             CallableStatement cs = null;
             try {
                 cs = connect.prepareCall(sql);
                 cs.setString(1, maKH);
-                cs.setString(2, soTK);
-                cs.registerOutParameter(3, loaitk);
+                cs.setInt(2, loaitk);
                 if (cs.executeUpdate() == 1)
                     System.out.println("ADD thanh cong acc");
                 else
@@ -83,7 +82,6 @@ public class accountImliment extends account implements accountDao {
                 }
             }
         }
-
     }
     // ------------ nap tien -------------
 
