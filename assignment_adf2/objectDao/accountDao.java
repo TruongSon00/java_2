@@ -5,7 +5,7 @@ import java.util.List;
 import assignment_adf2.object.account;
 
 public interface accountDao {
-    public void insert(String maKH, String soTK);
+    public void insert(String maKH);
 
     public void napTien(String soTK, int soTienNap);
 
@@ -14,4 +14,6 @@ public interface accountDao {
     public account tkTheoSoTK(String soTK);
 
     public List<account> tkTheoMaKH(String maKH);
+
+    public List<account> show();
 }

@@ -50,7 +50,7 @@ public class accountImliment extends account implements accountDao {
     // ----------- insert ---------------
     @Override
     public void insert(String maKH) {
-        int loaitk = 0;
+        int loaitk = -1;
 
         int check = checkAcc(maKH);
         if (check == 1)
@@ -59,7 +59,9 @@ public class accountImliment extends account implements accountDao {
             loaitk = 1;
         else if (check == -1)
             System.out.println("Ban chi duoc tao toi da 2 tai khoan");
-        if (check != -1) {
+        else
+            System.out.println("Ma khach hang khong ton tai");
+        if (check >= 0) {
             String sql = "exec dbo.pr_insert_account ?,?";
             CallableStatement cs = null;
             try {
@@ -67,7 +69,10 @@ public class accountImliment extends account implements accountDao {
                 cs.setString(1, maKH);
                 cs.setInt(2, loaitk);
                 if (cs.executeUpdate() == 1)
-                    System.out.println("ADD thanh cong acc");
+                    if (loaitk == 0)
+                        System.out.println("ADD thanh cong acc tra truoc");
+                    else
+                        System.out.println("ADD thanh cong acc tra sau");
                 else
                     System.out.println("ADD that bai");
 
@@ -87,7 +92,7 @@ public class accountImliment extends account implements accountDao {
 
     @Override
     public void napTien(String soTK, int soTienNap) {
-        String sql = "exec dbo.pr_NapTien_account ?,?,?,?";
+        String sql = "exec dbo.pr_NapTien_account ?,?,?,?,?";
         CallableStatement cs = null;
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         String ngayTao = sdf.format(new Date());
@@ -123,7 +128,7 @@ public class accountImliment extends account implements accountDao {
     // ------------ rut tien -------------
     @Override
     public void rutTien(String soTK, int soTienRut) {
-        String sql = "exec dbo.pr_RutTien_account ?,?,?,?,?,? ";
+        String sql = "exec dbo.pr_RutTien_account ?,?,?,?,?,?,? ";
         CallableStatement cs = null;
         String ngayTao = sdf.format(new Date());
         try {
@@ -134,12 +139,23 @@ public class accountImliment extends account implements accountDao {
             cs.registerOutParameter(4, Types.VARCHAR);
             cs.registerOutParameter(5, Types.INTEGER);
             cs.registerOutParameter(6, Types.NVARCHAR);
+            cs.registerOutParameter(7, Types.INTEGER);
 
-            if (cs.executeUpdate() == 1) {
-                giaoDich gDich = new giaoDich(soTK, 1, soTienRut, ngayTao, cs.getString(6));
+            int update = cs.executeUpdate();
+            int soTienCon = cs.getInt(3);
+            String trangThai = cs.getString(4);
+            int check = cs.getInt(5);
+            String noiThucHien = cs.getString(6);
+            int hanMucCon = cs.getInt(7);
+            if (update == 1) {
+                giaoDich gDich = new giaoDich(soTK, 1, soTienRut, ngayTao, noiThucHien);
+                if (check == 1)
+                    System.out.println("So tien con lai: " + soTienCon);
+                else if (check == 2)
+                    System.out.println("han muc con lai: " + hanMucCon);
                 insertGiaoDich(gDich);
             }
-            System.out.println(cs.getString(4));
+            System.out.println(trangThai);
 
         } catch (SQLException e) {
             System.out.println("ERROR: loi rut tien");
@@ -183,7 +199,7 @@ public class accountImliment extends account implements accountDao {
 
     @Override
     public List<account> tkTheoMaKH(String maKH) {
-        String sql = "select * from account where kh_id = any (select id from customer where maKH = " + maKH + ")";
+        String sql = "select * from account where kh_id = any (select id from customer where maKH = '" + maKH + "')";
         Statement state = null;
         List<account> list = new ArrayList<>();
         account acc = null;
@@ -231,6 +247,34 @@ public class accountImliment extends account implements accountDao {
             }
         }
         return acc;
+    }
+
+    // ------------ show -----------
+    public List<account> show() {
+        List<account> lAccounts = new ArrayList<>();
+        account acc;
+        String sql = "select * from account";
+        Statement state = null;
+        try {
+            state = connect.createStatement();
+            ResultSet lresult = state.executeQuery(sql);
+            while (lresult.next()) {
+                acc = new account();
+                acc.setKhID(lresult.getInt(2));
+                acc.setSoTK(lresult.getString(3));
+                acc.setLoaitk(lresult.getInt(4));
+                acc.setTrangThai(lresult.getInt(5));
+                acc.setNgayTao(sdf.format(lresult.getDate(6)));
+                acc.setSoTien(lresult.getInt(7));
+                acc.setHanMuc(lresult.getInt(8));
+                acc.setId(lresult.getInt(1));
+                lAccounts.add(acc);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return lAccounts;
     }
 
 }

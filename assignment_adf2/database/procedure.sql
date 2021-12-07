@@ -7,19 +7,21 @@ use adf2
 
 go
 create procedure pr_update_customer
-    @id int,
+
     @maKH varchar(20),
     @tenKH nvarchar(100),
     @cmt VARCHAR(10),
     @soDT VARCHAR(10),
     @email VARCHAR(50),
-    @ngaySinh DATE,
+    @ngaySinhStr varchar(20),
     @gioiTinh int,
     @address NVARCHAR(100),
     @loaiKH int,
     @status int out
 as
+
 begin
+    declare @ngaySinh date = convert (date, @ngaySinhStr, 103)
     if((select count(*)
     from customer
     where maKH = @maKH) = 1)
@@ -35,16 +37,16 @@ else
 end
 
 -- -------- procedure delete customer ---------
-
+drop proc pr_delete_customer
 go
 create proc pr_delete_customer
     @maKH VARCHAR(20),
     @status int out
 as
-if exists( select customer.maKH
-from customer
-    inner join account on customer.id = account.kh_id )
-set @status = 0
+if exists(select customer.maKH
+from customer inner join account on customer.id = account.kh_id
+where maKH = @maKH)
+    set @status = 0
 
 else if exists (select maKH
 from customer
@@ -59,26 +61,30 @@ set @status = -1
 
 -- =========== account ==========
 -- -------- check account ---------
+drop proc pr_checkAcc_account
 go
 create proc pr_checkAcc_account
     @maKH varchar(20),
     @status int OUT
 as
-if exists (select account.id
-from account inner join customer on account.kh_id = customer.id
-WHERE customer.maKH = @maKH )
+if exists (select makh
+from customer
+WHERE maKH = @maKH )
 begin
-    if  ((select count(*)
+    declare @countAcc int = (select count(*)
     from account inner join customer on account.kh_id = customer.id
-    WHERE customer.maKH = @maKH ) = 1)
-    set @status = 0
+    WHERE customer.maKH = @maKH )
+
+    if  (@countAcc = 1)
+        set @status = 0
+    else if(@countAcc = 0)
+        set @status = 1
     else 
-    set @status = -1
+        set @status = -1
 end 
 
-else 
- 
-set @status = 1
+else  
+    set @status = -2
 -- -------- insert ------------
 
 go
@@ -161,15 +167,17 @@ else
 
 
 -- --------- procedure rut tien ------------
-
+drop proc  pr_RutTien_account
 go
 create proc pr_RutTien_account
     @soTk char(6),
     @soTienRut int ,
     @soTienCon int out,
-    @status varchar(30) out,
+    @status varchar(100) out,
     @check int out,
-    @noiTT nvarchar(100) out
+    @noiTT nvarchar(100) out,
+    @hanMucCon int out
+
 
 as
 
@@ -202,7 +210,7 @@ begin
                     
         else 
         begin
-            update account set  soTien = soTien - @soTienRut  where sotk = @soTk
+            update account set  soTien = (soTien - @soTienRut)  where sotk = @soTk
             set @soTienCon = @soTienCon - @soTienRut
             set @status = 'rut tien tu the tra truoc thanh cong'
             set @check = 1
@@ -212,10 +220,10 @@ begin
     begin
         if( @soTienRut <= @hanMuc )
         begin
-            update account set hanMuc = hanMuc - @soTienRut 
+            update account set @hanMucCon = hanMuc = (hanMuc - @soTienRut )
             where sotk = @soTk
             set @status = 'rut tien tu the visa thanh cong'
-            set @check  = 1
+            set @check  = 2
 
         end
         else 
@@ -239,10 +247,11 @@ go
 create PROC pr_select_transaction_cus
 
     @maKH varchar(20),
-    @beginTime date,
-    @endTime date
+    @beginTimeStr varchar(20),
+    @endTimeStr varchar(20)
 
 as
+DECLARE @beginTime date = CONVERT(date,@beginTimeStr,103), @endTime date = CONVERT(date,@endTimeStr,103)
 begin
     select giaoDich.*
     from giaoDich inner join account on account.sotk = giaoDich.sotk
@@ -251,6 +260,8 @@ begin
     order by account.loaitk,giaoDich.ngayTao
 
 end
+
+exec dbo.pr_select_transaction_cus 'vu3008','20/10/2020','20/10/2021'
 
 -- ---------- procedure transaction xuatFile -----------
 
@@ -261,7 +272,7 @@ create proc pr_transaction_theoMonth
 as
 
 begin
-    select giaoDich.*, customer.maKH
+    select giaoDich.id, giaoDich.sotk, giaoDich.loaitt, giaoDich.soTien, giaoDich.ngayTao, giaoDich.noiThucHien, customer.maKH
     from giaoDich inner join account on account.sotk = giaoDich.sotk
         inner join customer on customer.id = account.kh_id
     where  month(giaoDich.ngayTao) = @month and year(giaoDich.ngayTao) = @year
@@ -269,7 +280,7 @@ begin
     order by customer.maKH, giaoDich.sotk
 end
 
-exec dbo.pr_transaction_theoMonth 8, 2021
+
 
 
 

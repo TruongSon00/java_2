@@ -104,13 +104,14 @@ public class account {
                 + "  |  khID = " + khID
 
                 + "  |  soTien = " + soTien
+
                 + "  |  loaitk=" + getLoaitkIn()
 
                 + "  |  ngayTao = " + ngayTao
 
-                + "  |  hanmuc = " + hanMuc
+                + "  |  hanmuc = " + hanMuc;
 
-                + "  |  trangThai = " + getTrangThaiIn();
+        // + " | trangThai = " + getTrangThaiIn();
     }
 
 }

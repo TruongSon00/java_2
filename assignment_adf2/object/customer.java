@@ -125,9 +125,9 @@ public class customer {
                 + "  |  cmt = " + cmt
                 + "  |  soDT = " + soDT
                 + "  |  ngaySinh = " + ngaySinh
-                + "  |  address = " + address
-                + "  |  email = " + email
-                + "  |  gioiTinh = " + getGioiTinhIn()
+                // + " | address = " + address
+                // + " | email = " + email
+                // + " | gioiTinh = " + getGioiTinhIn()
                 + "  |  loaiKH = " + getLoaiKHIn();
 
     }

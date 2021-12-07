@@ -1,0 +1,2 @@
+
+GiaoDich  -->  id = 8  |  soTK = 000001  |  ngayTao = 07/12/2021  |  soTien = 5000000  |  loaiTT = rut  |  noiThucHien = HP

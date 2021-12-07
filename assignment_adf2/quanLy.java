@@ -1,9 +1,12 @@
 package assignment_adf2;
 
 import java.sql.Connection;
+import java.util.List;
 import java.util.Scanner;
 
 import assignment_adf2.connect.db_connect;
+import assignment_adf2.object.account;
+import assignment_adf2.object.customer;
 import assignment_adf2.objectDao.accountDao;
 import assignment_adf2.objectDao.customerDao;
 import assignment_adf2.objectDao.transactionDao;
@@ -57,7 +60,13 @@ public class quanLy {
                     cus.delete(sc.nextLine());
                     break;
                 case 4:
-                    cus.show();
+                    List<customer> listCus = cus.show();
+                    if (listCus != null)
+                        for (customer customer : listCus) {
+                            System.out.println(customer.toString());
+                        }
+                    else
+                        System.out.println("chua co khach hang de hien thi");
                     break;
 
                 default:
@@ -73,17 +82,19 @@ public class quanLy {
     public void account(Scanner sc) {
         int choose;
         while (true) {
-            System.out.println("-------- MAIN --------");
+            System.out.println("-------- Account --------");
             System.out.print("1. Create acc");
             System.out.println("\t\t2. Nap tien");
             System.out.print("3. Rut tien");
             System.out.println("\t\t4. Acc tu soTT");
             System.out.print("5. Accs to maKH");
-            System.out.println("\t\t6. Thoat");
+            System.out.println("\t\t6. show acc");
+            System.out.print("7. Thoat");
             System.out.print("\nNhap lua chon: ");
             choose = checkInt(sc);
             String soTK;
             int soTienNap, soTienRut;
+            List<account> lAccounts;
             switch (choose) {
                 case 1:
                     System.out.print("Nhap ma khach hang: ");
@@ -107,13 +118,33 @@ public class quanLy {
                     break;
                 case 4:
                     System.out.print("Nhap so tai khoan: ");
-                    accs.tkTheoSoTK(sc.nextLine());
+                    account tk = accs.tkTheoSoTK(sc.nextLine());
+                    if (tk != null)
+                        System.out.println(tk.toString());
+                    else
+                        System.out.println("So tai khoan khong ton tai");
                     break;
                 case 5:
                     System.out.print("Nhap ma khach hang: ");
-                    accs.tkTheoMaKH(sc.nextLine());
+
+                    lAccounts = accs.tkTheoMaKH(sc.nextLine());
+                    if (lAccounts != null)
+                        for (account account : lAccounts) {
+                            System.out.println(account.toString());
+                        }
+                    else
+                        System.out.println("ma khach hang khong dung");
                     break;
                 case 6:
+                    lAccounts = accs.show();
+                    if (lAccounts != null)
+                        for (account account : lAccounts) {
+                            System.out.println(account.toString());
+                        }
+                    else
+                        System.out.println("Hien chua co tai khoan nao");
+                    break;
+                case 7:
 
                     break;
 
@@ -121,7 +152,7 @@ public class quanLy {
                     break;
 
             }
-            if (choose == 6)
+            if (choose == 7)
                 break;
         }
     }
@@ -131,12 +162,12 @@ public class quanLy {
         int choose;
         while (true) {
             System.out.println("-------- Bao cao --------");
-            System.out.print("1. Hien thi thong tin giao dich cua khach hang");
-            System.out.print("2. Hien thi thong tin giao dich cua tai khoan");
-            System.out.print("3. Xuat file giao dich theo thang cua khach hang");
-            System.out.print("(Xep theo ngay thuc hien giao dich va loai tai khoan)");
+            System.out.println("1. Hien thi thong tin giao dich cua khach hang");
+            System.out.println("2. Hien thi thong tin giao dich cua tai khoan");
+            System.out.println("3. Xuat file giao dich theo thang cua khach hang");
+            System.out.println("4. Thoat");
+            System.out.println("(Xep theo ngay thuc hien giao dich va loai tai khoan)");
 
-            System.out.println("\t\t4. Thoat");
             System.out.print("\nNhap lua chon: ");
             choose = checkInt(sc);
             String month, year, matk, maKH, beginTime, endTime;
@@ -165,7 +196,10 @@ public class quanLy {
 
                     System.out.print("Nhap nam: ");
                     year = sc.nextLine();
-                    gDich.xuatFile(month, year);
+                    if (gDich.xuatFile(month, year))
+                        System.out.println("Ghi file thanh cong");
+                    else
+                        System.out.println("Hien chua co giao dich nao phu hop");
                     break;
                 case 4:
 
@@ -195,13 +229,13 @@ public class quanLy {
 
             switch (choose) {
                 case 1:
-
+                    manage.customer(sc);
                     break;
                 case 2:
-
+                    manage.account(sc);
                     break;
                 case 3:
-
+                    manage.giaoDich(sc);
                     break;
                 case 4:
 

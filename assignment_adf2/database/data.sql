@@ -46,9 +46,10 @@ values
     ('000005', 1, 500000, '2021-09-20', N'HP'),
     ('000005', 0, 500000, '2021-09-20', N'HP')
 
-SELECT *
-from giaoDich
 -- ------------- test loi ------------
+
+SELECT *
+from account
 
 
 insert into customer
@@ -67,7 +68,7 @@ values
     ('031201', 1, 1000000, '2021-08-20', N'HP')
 
 
-drop table test
+
 create table test
 (
     id int IDENTITY(1,1),
@@ -86,18 +87,34 @@ begin
         from inserted)
 end
 
-insert into test
-    (name)
-values
-    ('son')
-insert into test
-    (name)
-values
-    ('hih')
-insert into test
-    (name)
-values
-    ('haha')
+-- ---------- test proc ---------
+drop proc pr_test_check_makh
+go
+create proc pr_test_check_makh
+    @maKH varchar(20)
 
-SELECT *
-from test
+as
+begin
+    if exists (select makh
+    from customer
+    WHERE maKH = @maKH )
+    begin
+        SELECT *
+        from customer
+
+    end 
+    else 
+         SELECT 0
+
+end
+
+exec pr_test_check_makh 'yen3008'
+
+-- ----- test proc -------
+go
+create proc pr_test
+as
+select *
+from customer
+
+exec pr_test

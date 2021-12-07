@@ -47,15 +47,15 @@ public class customerImlement extends customer implements customerDao {
         khack.setNgaySinh(sc.nextLine());
 
         System.out.print("Nhap gioi tinh (1: name, 0: nu or 2: khac): ");
-        khack.setGioiTinh(sc.nextInt());
-        sc.nextLine();
-        System.out.print("Nhap Address: ");
-        khack.setAddress(sc.nextLine());
+        khack.setGioiTinh(1);
+        // sc.nextLine();
+        // System.out.print("Nhap Address: ");
+        khack.setAddress("HP");
 
-        System.out.print("Nhap loai khach hang: ");
-        khack.setLoaiKH(sc.nextInt());
-        sc.nextLine();
-        return null;
+        // System.out.print("Nhap loai khach hang: ");
+        khack.setLoaiKH(1);
+        // sc.nextLine();
+        return khack;
     }
 
     // ------------- delete -------------
@@ -70,8 +70,10 @@ public class customerImlement extends customer implements customerDao {
             cs.execute();
             if (cs.getInt(2) == 1)
                 System.out.println("Delete thanh cong");
-            else
+            else if (cs.getInt(2) == 0)
                 System.out.println("Fail: khach hang da tao the");
+            else
+                System.out.println("ma khach hang khong ton tai");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -95,12 +97,12 @@ public class customerImlement extends customer implements customerDao {
             ps.setInt(9, customer.getLoaiKH());
 
             if (ps.executeUpdate() == 1)
-                System.out.println("Update succesfully");
+                System.out.println("insert succesfully");
             else
-                System.out.println("ma khach hang khong ton tai");
+                System.out.println("insert that bai");
 
         } catch (SQLException e) {
-            System.out.println("Update that bai");
+            System.out.println("ERROR: insert that bai");
             e.printStackTrace();
         } finally {
             try {
@@ -121,6 +123,7 @@ public class customerImlement extends customer implements customerDao {
             ResultSet listSet = state.executeQuery(sql);
             customer cus = new customer();
             while (listSet.next()) {
+                cus = new customer();
                 cus.setId(listSet.getInt(1));
                 cus.setMaKH(listSet.getString(2));
                 cus.setTenKH(listSet.getString(3));
@@ -144,19 +147,19 @@ public class customerImlement extends customer implements customerDao {
     // ----------- update --------------
     @Override
     public void update(customer customer) {
-        String sql = "exec dbo.pr_update_customer ?,?,?,?,convert(date, ?, 103),?,?,?,?,?";
+        String sql = "exec dbo.pr_update_customer ?,?,?,?,?,?,?,?,?,?";
         CallableStatement cs = null;
         try {
             cs = connect.prepareCall(sql);
-            cs.setString(1, customer.getTenKH());
-            cs.setString(2, customer.getCmt());
-            cs.setString(3, customer.getSoDT());
-            cs.setString(4, customer.getEmail());
-            cs.setString(5, customer.getNgaySinh());
-            cs.setInt(6, customer.getGioiTinh());
-            cs.setString(7, customer.getAddress());
-            cs.setInt(8, customer.getLoaiKH());
-            cs.setString(9, customer.getMaKH());
+            cs.setString(1, customer.getMaKH());
+            cs.setString(2, customer.getTenKH());
+            cs.setString(3, customer.getCmt());
+            cs.setString(4, customer.getSoDT());
+            cs.setString(5, customer.getEmail());
+            cs.setString(6, customer.getNgaySinh());
+            cs.setInt(7, customer.getGioiTinh());
+            cs.setString(8, customer.getAddress());
+            cs.setInt(9, customer.getLoaiKH());
             cs.registerOutParameter(10, Types.INTEGER);
             cs.execute();
 

@@ -11,8 +11,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import assignment_adf2.object.giaoDich;
+import assignment_adf2.objectDao.transactionDao;
 
-public class transactionIlement extends giaoDich {
+public class transactionIlement extends giaoDich implements transactionDao {
+    // ----------- initazile ---------------
     private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
     File root = new File(System.getProperty("user.dir"), "assignment_adf2/xuatFile");
     private Connection connect;
@@ -21,9 +23,11 @@ public class transactionIlement extends giaoDich {
         this.connect = connect;
     }
 
+    // -------- giao dich theo acc --------------
+
     public void transactionTheoAcc(String matk, String beginTime, String endTime) {
         String sql = "select * from giaoDich "
-                + "where sotk = ? ngayTao >= convert(date,?,103) and ngayTao <= convert(date,?,103) order by ngayTao";
+                + "where sotk = ? and ngayTao >= convert(date,?,103) and ngayTao <= convert(date,?,103) order by ngayTao";
         PreparedStatement ps = null;
         try {
             ps = connect.prepareStatement(sql);
@@ -54,6 +58,7 @@ public class transactionIlement extends giaoDich {
         }
 
     }
+    // -------- giao dich theo customer --------------
 
     public void transactionTheoCus(String maKH, String beginTime, String endTime) {
         String sql = "exec dbo.pr_select_transaction_cus ?,?,?";
@@ -80,30 +85,33 @@ public class transactionIlement extends giaoDich {
         }
     }
 
+    // -------- xuat file --------------
     public boolean xuatFile(String month, String year) {
         String sql = "exec dbo.pr_transaction_theoMonth ?,?";
         PreparedStatement ps = null;
+        File file = null;
+        boolean check = false;
+
         try {
-            ps = connect.prepareStatement(sql);
+            ps = connect.prepareStatement(sql, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
             ps.setString(1, month);
             ps.setString(2, year);
             ResultSet results = ps.executeQuery();
-            List<giaoDich> list;
-            giaoDich transaction = new giaoDich();
-            File file;
-            FileWriter fw;
-            String nameFile = "", maKH = "", soTK = "";
+            List<giaoDich> list = new ArrayList<>();
+            giaoDich transaction;
+            String nameFile = "emply.txt", maKH = "", soTK = "";
             while (results.next()) {
+
+                list = new ArrayList<>();
                 maKH = results.getString(7);
                 soTK = results.getString(2);
-                nameFile = maKH + "_" + soTK + "_" + month + "/" + year;
-                list = new ArrayList<>();
-                while (true) {
+                nameFile = maKH + "_" + soTK + "_" + month + "-" + year + ".txt";
+                results.previous();
+                while (results.next()) {
+                    transaction = new giaoDich();
                     if (maKH.equals(results.getString(7)) && !soTK.equals(results.getString(2))
                             || !maKH.equals(results.getString(7))) {
                         results.previous();
-                        maKH = results.getString(7);
-                        soTK = results.getString(2);
                         break;
                     }
                     transaction.setId(results.getInt(1));
@@ -112,22 +120,31 @@ public class transactionIlement extends giaoDich {
                     transaction.setSoTien(results.getInt(4));
                     transaction.setNgayTao(sdf.format(results.getDate(5)));
                     transaction.setNoiThucHien(results.getString(6));
-
                     list.add(transaction);
                 }
                 file = new File(root, nameFile);
-                fw = new FileWriter(file);
+                FileWriter fw = new FileWriter(file);
                 for (giaoDich gDich : list) {
                     fw.write(gDich.toString());
                 }
+                fw.close();
             }
+            if (maKH != "")
+                check = true;
+            else
+                check = true;
+
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-
+            try {
+                ps.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
-        return false;
+        return check;
     }
 
 }
